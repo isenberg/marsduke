@@ -11,3 +11,6 @@ The file appexample.install4j is optional and an example project file for https:
 * appexample_linux.rpm
 * appexample_unix.tar.gz
 * appexample_windows.exe
+
+## License
+This is an application example, no copyright claimed, license: https://www.apache.org/licenses/LICENSE-2.0 .
