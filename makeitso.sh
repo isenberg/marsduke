@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# application packaging example, no copyright claimed, license: https://www.apache.org/licenses/LICENSE-2.0
+
 if ! [ -x /usr/libexec/java_home ]; then
   echo "Canceled. This script is intendend to be run on the macOS Terminal."
   exit 1
