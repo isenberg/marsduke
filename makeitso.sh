@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if ! [ -x /usr/libexec/java_home ]; then
+  echo "Canceled. This script is intendend to be run on the macOS Terminal."
+  exit 1
+fi
+
 JAVA_HOME=$(/usr/libexec/java_home -v 17)
 BUILDDIR=tmpbuild
 ICONDIR=app.iconset
