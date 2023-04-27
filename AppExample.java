@@ -1,3 +1,4 @@
+// application example, no copyright claimed, license: https://www.apache.org/licenses/LICENSE-2.0
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
