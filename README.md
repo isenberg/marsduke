@@ -1,5 +1,5 @@
 # Marsduke
-This example creates with the script makeitso.sh the macOS application bundle AppExample.app from the source file AppExample.java and includes an image file marsduke.png for display in the app window.
+This example creates the macOS application bundle AppExample.app from the source file AppExample.java and includes an image file marsduke.png for display in the app window.
 A default JRE is created internally by jpackage which is also included into the bundle.
 The image is re-used to create an application icon.
 
