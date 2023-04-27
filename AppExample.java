@@ -12,7 +12,7 @@ public class AppExample {
         String appName = "AppExample";
         String imgFilename = "marsduke.png";
         JLabel textLabel = new JLabel("<html>Spirit Mars Rover, Pancam, "
-            + "Sol 120, 2004-05-05, image ID 2P137011382EFF4000P2563L5M1</html>");
+            + "Sol 120, 2004-05-05, ID 2P137011382EFF4000P2563L5M1</html>");
         String links[] = {
             "https://areo.info/mer/spirit/120",
             "https://mars.nasa.gov/mer/gallery/all/spirit_p120.html"
