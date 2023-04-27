@@ -1,41 +1,68 @@
 #!/bin/bash
 
 # application packaging example, no copyright claimed, license: https://www.apache.org/licenses/LICENSE-2.0
+# this example packages a Java application with an JRE as native application bundle on macOS or Linux
 
-if ! [ -x /usr/libexec/java_home ]; then
-  echo "Canceled. This script is intendend to be run on the macOS Terminal."
+BUILDDIR="tmpbuild"
+ICONDIR="app.iconset"
+
+# JDK 17 is minimum for jpackage, older versions or JRE won't work
+if /usr/libexec/java_home -v 17 --exec jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
+  APPNAME=AppExample
+  echo "Creating $APPNAME.app macOS application bundle..."
+  JAVA_HOME=$(/usr/libexec/java_home -v 17)
+  PATH="$JAVA_HOME/bin:$PATH"
+  MACOS=1
+elif jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
+  APPNAME=appexample
+  echo "Creating Linux application bundle $APPNAME..."
+  unset MACOS
+else
+  echo "Canceled. No JDK 17 or newer found."
   exit 1
 fi
 
-JAVA_HOME=$(/usr/libexec/java_home -v 17)
-BUILDDIR=tmpbuild
-ICONDIR=app.iconset
-
+if [ $MACOS ]; then
 # re-using the image file also for the app icon
-mkdir -p $ICONDIR
+mkdir -p "$ICONDIR"
 rprev=""
 for r in 1024 512 256 128 64 32 16; do
-  sips -z $r $r marsduke.png --out $ICONDIR/icon_${r}x${r}.png
+  sips -z $r $r marsduke.png --out "$ICONDIR/icon_${r}x${r}.png"
   if [ "$rprev" ]; then
-    cp $ICONDIR/icon_${rprev}x${rprev}.png $ICONDIR/icon_${r}x${r}@2x.png
+    cp "$ICONDIR/icon_${rprev}x${rprev}.png" "$ICONDIR/icon_${r}x${r}@2x.png"
   fi
   rprev=$r
 done
-rm $ICONDIR/icon_1024x1024.png
-iconutil -c icns $ICONDIR 
+rm "$ICONDIR/icon_1024x1024.png"
+iconutil -c icns "$ICONDIR" 
+fi
 
-mkdir -p $BUILDDIR
-cp marsduke.png $BUILDDIR/
+mkdir -p "$BUILDDIR"
+cp marsduke.png "$BUILDDIR/"
 
-$JAVA_HOME/bin/javac AppExample.java
-$JAVA_HOME/bin/jar -cvfe $BUILDDIR/app.jar AppExample AppExample*.class
+javac AppExample.java
+jar -cvfe "$BUILDDIR/app.jar" AppExample AppExample*.class
 
-# create .app bundle
-# or use --type dmg instead of --type app-image
-# to create .app bundle inside a .dmg image
-$JAVA_HOME/bin/jpackage --type app-image \
- --dest . --input $BUILDDIR --icon app.icns --name AppExample \
- --main-class AppExample --main-jar app.jar --verbose
+# create application bundle with embedded JRE
+if [ $MACOS ]; then
+  # alternatively, use --type dmg instead of --type app-image to create .app bundle inside a .dmg image
+  jpackage --type app-image \
+    --dest . --input "$BUILDDIR" --icon app.icns --name $APPNAME \
+    --main-class AppExample --main-jar app.jar --verbose
+  rm app.icns
+  rm -rf "$ICONDIR"
+  echo "$APPNAME bundle created."
+  echo "To start it in Terminal.app: $APPNAME.app/Contents/MacOS/$APPNAME"
+  echo "Or start it from the desktop with a double click on $APPNAME."
+else
+  # Linux
+  # alternatively, use --type rpm or deb instead of --type app-image
+  jpackage --type app-image \
+    --dest . --input "$BUILDDIR" --name $APPNAME \
+    --main-class AppExample --main-jar app.jar --verbose
+  echo "$APPNAME bundle created. To start it: $APPNAME/bin/$APPNAME"
+fi
 
-rm -rf $BUILDDIR $ICONDIR
-rm app.icns AppExample*.class
+rm -rf "$BUILDDIR"
+rm AppExample*.class
+
