@@ -11,9 +11,11 @@
  * Date: 2023-06-21
  * No copyright claimed, free for any use.
  * 
- * To run it on JavaFX 17, available for example on https://azul.com/downloads:
+ * To run it on JavaFX 17, available for example from a few vendors on https://foojay.io/download:
  * javac FXMarsDuke.java
  * java FXMarsDuke
+ *
+ * Or to build the integrated Mac .app bundle which will include the JRE: ./fxmakeitso.sh
  * 
  */
 
