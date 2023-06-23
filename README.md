@@ -1,8 +1,13 @@
 # Marsduke
-This example creates the macOS application bundle AppExample.app from the source file AppExample.java and includes an image file marsduke.png for display in the app window. A default JRE is created internally by jpackage which is also included into the bundle. The included image is used to create an application icon.
+This example creates the macOS application bundle AppExample.app from the source file AppExample.java and includes an image file marsduke.png for display in the app window. A default JRE is created internally by jpackage which is also included into the bundle. That means for later running the example you don't need a separate Java installation as all is included in one package. The included image is used to create an application icon.
 
-## How to build
+## How to build the plain Java example
 In Terminal.app on macOS run `chmod a+rx makeitso.sh` and then `./makeitso.sh` to build the application package. The AppExample.app bundle is created in the current directory and can be started from there with a double click or can be moved to the folder /Applications.
+
+## How to build the JavaFX example
+You need at least Java FX 17 JDK installed to build it.
+
+In Terminal.app on macOS run `chmod a+rx fxmakeitso.sh` and then `./fxmakeitso.sh` to build the FX application package. The FXMarsDuke.app bundle is created in the current directory and can be started from there with a double click or can be moved to the folder /Applications.
 
 ## Install4j Project File
 The file appexample.install4j is optional and an example project file for https://ej-technologies.com/products/install4j/overview.html to produce the installation packages listed below. All packages except for the appexample_unix.tar.gz include a JRE. The macOS disk image contains a universal binary AppExample.app inside appexample.dmg for drag & drop into the Applications folder. 
