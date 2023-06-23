@@ -26,5 +26,10 @@ For distributing the bundle to others, refer to the following:
 * https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide
 * https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution
 
+## Image Source
+Mars Exploration Rover Spirit, Pancam, sol 120, May 5, 2004, ID 2P137011382EFF4000P2563L5M1
+Processed color image: https://areo.info/mer/spirit/120
+Raw data: https://mars.nasa.gov/mer/gallery/all/spirit_p120.html
+
 ## License
 This is an application example, no copyright is claimed for any of the included files, license: https://www.apache.org/licenses/LICENSE-2.0
