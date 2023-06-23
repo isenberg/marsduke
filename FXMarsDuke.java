@@ -17,8 +17,10 @@
  * 
  */
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -26,7 +28,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -40,6 +41,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class FXMarsDuke extends Application {
@@ -49,10 +51,18 @@ public class FXMarsDuke extends Application {
 	private PhongMaterial solidMaterial = new PhongMaterial();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		if(args.length > 0) {
+		InputStream imgStream;
+		if(args.length == 0) {
+			String appDir = FXMarsDuke.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+			if (appDir.endsWith(".jar")) {
+				appDir = new File(appDir).getParent();
+			}
+			imgStream = new FileInputStream(new File(appDir, imgfilename));
+		} else {
 			imgfilename = args[0];
+			imgStream = new FileInputStream(imgfilename);
 		}
-		texture = new Image(new FileInputStream(imgfilename));
+		texture = new Image(imgStream);
 		System.out.print("Loading image " + imgfilename + "...");
 		while(texture.getWidth() == 0) { 
 			System.out.print(".");
