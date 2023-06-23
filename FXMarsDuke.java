@@ -47,8 +47,6 @@ import javafx.stage.Stage;
 public class FXMarsDuke extends Application {
 	static private String imgfilename = "marsduke.png";
 	static private Image texture;
-	private PhongMaterial texturedMaterial = new PhongMaterial();
-	private PhongMaterial solidMaterial = new PhongMaterial();
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		InputStream imgStream;
@@ -72,7 +70,7 @@ public class FXMarsDuke extends Application {
 		System.out.println("  Mars Exploration Rover Spirit, Pancam, sol 120, May 5, 2004\n"
 				+ "  ID 2P137011382EFF4000P2563L5M1\n"
 				+ "  https://areo.info/mer/spirit/120\n"
-                + "  https://mars.nasa.gov/mer/gallery/all/spirit_p120.html\n");
+				+ "  https://mars.nasa.gov/mer/gallery/all/spirit_p120.html\n");
 		System.out.println("Press and move mouse to rotate cube,\n"
 				+ "or use keys: " + KeyCode.UP + ", " + KeyCode.DOWN
 				+ ", " + KeyCode.LEFT + ", " + KeyCode.RIGHT
@@ -81,14 +79,12 @@ public class FXMarsDuke extends Application {
 		launch(args);
 	}
 
-	@Override
 	public void start(Stage stage) {
 		stage.setTitle("FXMarsDuke");
-		
-		solidMaterial.setSpecularColor(Color.ORANGE);
-		solidMaterial.setDiffuseColor(Color.RED);
+
+		PhongMaterial texturedMaterial = new PhongMaterial();
 		texturedMaterial.setDiffuseMap(texture);
-		
+
 		Box cube = new Box();
 		cube.setWidth(texture.getWidth()); 
 		cube.setHeight(texture.getWidth());
@@ -98,73 +94,73 @@ public class FXMarsDuke extends Application {
 		Group rootGroup = new Group();
 		Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 		double viewSize = Math.min(screenBounds.getWidth(), screenBounds.getHeight())*2/3;
+		viewSize = Math.min(viewSize, cube.getWidth());
 		Scene scene = new Scene(rootGroup, viewSize, viewSize, true);
-		scene.setFill(new RadialGradient(225, 0.85,
-				scene.getWidth()/2, scene.getHeight()/2, scene.getHeight()/2, false,
+		scene.setFill(new RadialGradient(270, 0.75,
+				scene.getWidth()/2, scene.getHeight()/2, 1.5*scene.getHeight(), false,
 				CycleMethod.NO_CYCLE, new Stop[]{
 						new Stop(0f, Color.BLUE),
 						new Stop(1f, Color.LIGHTBLUE)
-				}));
+		}));
 		PerspectiveCamera camera = new PerspectiveCamera();
 		scene.setCamera(camera);
 		scene.setOnScroll((ScrollEvent e) -> {
 			camera.setTranslateZ(camera.getTranslateZ() + e.getDeltaY());
 		});
 
-		cube.getTransforms().add(new Translate(scene.getWidth()/2, scene.getHeight()/2, 1));
+		cube.getTransforms().add(new Translate(scene.getWidth()/2, scene.getHeight()/2, 0));
 		rootGroup.getChildren().addAll(cube);
-		
+
 		EventHandler<MouseEvent> mouseHandler =	new EventHandler<MouseEvent>() {
 			private double oldX, oldY, olddx, olddy;
-	        public void handle(MouseEvent mouseEvent) {
-	            if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-	            	oldX = mouseEvent.getSceneX();
-	            	oldY = mouseEvent.getSceneY();
-	            	olddx = 0;
-	            	olddy = 0;
-	            }
-	            if(mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
-	            	double dx, dy;
-	            	if (olddx == 0 && olddy == 0) {
-	            		dx = mouseEvent.getSceneX() - oldX;
-	            		dy = mouseEvent.getSceneY() - oldY;
-	            	} else {
-	            		dx = mouseEvent.getSceneX() - olddx;
-	            		dy = mouseEvent.getSceneY() - olddy;
-		            	olddx = dx;
-		            	olddy = dy;
-	            	}
-	            	cube.getTransforms().add(new Rotate(-dx/(scene.getWidth()/2), 0, 0, 0, Rotate.Y_AXIS));
-	            	cube.getTransforms().add(new Rotate(dy/(scene.getHeight()/2), 0, 0, 0, Rotate.X_AXIS));
-	            }
-	        }};
-		EventHandler<KeyEvent> keyHandler =	new EventHandler<KeyEvent>() {
-		        public void handle(KeyEvent keyEvent) {
-	            	if(keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
-	            		double dw = scene.getWidth()/100; 
-	            		double dz = scene.getHeight()/10;
-	            		if(keyEvent.getCode() == KeyCode.PLUS || keyEvent.getCode() == KeyCode.EQUALS) {
-	            			cube.getTransforms().add(new Translate(0, 0, -dz));
-	            		} else if(keyEvent.getCode() == KeyCode.MINUS) {
-	            			cube.getTransforms().add(new Translate(0, 0, dz));
-	            		} else if(keyEvent.getCode() == KeyCode.UP) {
-	            			cube.getTransforms().add(new Rotate(-dw, 0, 0, 0, Rotate.X_AXIS));
-	            		} else if(keyEvent.getCode() == KeyCode.DOWN) {
-	            			cube.getTransforms().add(new Rotate(dw, 0, 0, 0, Rotate.X_AXIS));
-	            		} else if(keyEvent.getCode() == KeyCode.LEFT) {
-	            			cube.getTransforms().add(new Rotate(dw, 0, 0, 0, Rotate.Y_AXIS));
-	            		} else if(keyEvent.getCode() == KeyCode.RIGHT) {
-	            			cube.getTransforms().add(new Rotate(-dw, 0, 0, 0, Rotate.Y_AXIS));
-	            		} else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.ESCAPE) {
-	            			stage.close();
-	            		}
-	            	}
-		        }};
-		scene.setOnMousePressed(mouseHandler);
-		scene.setOnMouseDragged(mouseHandler);
-		scene.setOnKeyPressed(keyHandler);
-		scene.setOnKeyReleased(keyHandler);
-		stage.setScene(scene);
-		stage.show();
+			public void handle(MouseEvent mouseEvent) {
+				if(mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
+					oldX = mouseEvent.getSceneX();
+					oldY = mouseEvent.getSceneY();
+					olddx = 0;
+					olddy = 0;
+				}
+				if(mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+					double dx, dy;
+					if (olddx == 0 && olddy == 0) {
+						dx = mouseEvent.getSceneX() - oldX;
+						dy = mouseEvent.getSceneY() - oldY;
+					} else {
+						dx = mouseEvent.getSceneX() - olddx;
+						dy = mouseEvent.getSceneY() - olddy;
+						olddx = dx;
+						olddy = dy;
+					}
+					cube.getTransforms().add(new Rotate(-dx/(scene.getWidth()/2), 0, 0, 0, Rotate.Y_AXIS));
+					cube.getTransforms().add(new Rotate(dy/(scene.getHeight()/2), 0, 0, 0, Rotate.X_AXIS));
+				}
+			}};
+			EventHandler<KeyEvent> keyHandler =	new EventHandler<KeyEvent>() {
+				public void handle(KeyEvent keyEvent) {
+					if(keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+						double dw = scene.getWidth()/100; 
+						double dz = scene.getHeight()/10;
+						if(keyEvent.getCode() == KeyCode.PLUS || keyEvent.getCode() == KeyCode.EQUALS) {
+							cube.getTransforms().add(new Translate(0, 0, -dz));
+						} else if(keyEvent.getCode() == KeyCode.MINUS) {
+							cube.getTransforms().add(new Translate(0, 0, dz));
+						} else if(keyEvent.getCode() == KeyCode.UP) {
+							cube.getTransforms().add(new Rotate(-dw, 0, 0, 0, Rotate.X_AXIS));
+						} else if(keyEvent.getCode() == KeyCode.DOWN) {
+							cube.getTransforms().add(new Rotate(dw, 0, 0, 0, Rotate.X_AXIS));
+						} else if(keyEvent.getCode() == KeyCode.LEFT) {
+							cube.getTransforms().add(new Rotate(dw, 0, 0, 0, Rotate.Y_AXIS));
+						} else if(keyEvent.getCode() == KeyCode.RIGHT) {
+							cube.getTransforms().add(new Rotate(-dw, 0, 0, 0, Rotate.Y_AXIS));
+						} else if(keyEvent.getCode() == KeyCode.Q || keyEvent.getCode() == KeyCode.ESCAPE) {
+							stage.close();
+						}
+					}
+				}};
+				scene.setOnMousePressed(mouseHandler);
+				scene.setOnMouseDragged(mouseHandler);
+				scene.setOnKeyPressed(keyHandler);
+				stage.setScene(scene);
+				stage.show();
 	}
 }
