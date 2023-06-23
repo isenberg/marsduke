@@ -28,7 +28,9 @@ For distributing the bundle to others, refer to the following:
 
 ## Image Source
 Mars Exploration Rover Spirit, Pancam, sol 120, May 5, 2004, ID 2P137011382EFF4000P2563L5M1
+
 Processed color image: https://areo.info/mer/spirit/120
+
 Raw data: https://mars.nasa.gov/mer/gallery/all/spirit_p120.html
 
 ## License
