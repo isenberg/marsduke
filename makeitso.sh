@@ -7,10 +7,11 @@ BUILDDIR="tmpbuild"
 ICONDIR="app.iconset"
 
 # JDK 17 is minimum for jpackage, older versions or JRE won't work
-if /usr/libexec/java_home -v 17 --exec jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
+# they keyworkd "newest" doesn't really exist, any non-matching version number will return the newest installed
+if /usr/libexec/java_home -v newest --exec jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
   APPNAME=AppExample
   echo "Creating $APPNAME.app macOS application bundle..."
-  JAVA_HOME=$(/usr/libexec/java_home -v 17)
+  JAVA_HOME=$(/usr/libexec/java_home -v newest)
   PATH="$JAVA_HOME/bin:$PATH"
   MACOS=1
 elif jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
