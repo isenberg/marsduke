@@ -8,16 +8,21 @@ ICONDIR="app.iconset"
 
 # JDK 17 is minimum for jpackage, older versions or JRE won't work
 # they keyworkd "newest" doesn't really exist, any non-matching version number will return the newest installed
-if /usr/libexec/java_home -v newest --exec jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
+if [ $(uname -s) == "Darwin" ]; then
+  MACOS=1
   APPNAME=AppExample
   echo "Creating $APPNAME.app macOS application bundle..."
-  JAVA_HOME=$(/usr/libexec/java_home -v newest)
-  PATH="$JAVA_HOME/bin:$PATH"
-  MACOS=1
-elif jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
+else
+  unset MACOS
   APPNAME=appexample
   echo "Creating Linux application bundle $APPNAME..."
-  unset MACOS
+fi
+if jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
+  echo JDK version found: $(jpackage --version)
+elif [ "$MACOS" ] && /usr/libexec/java_home -v newest --exec jpackage --version 2>/dev/null | grep -E '^(17|18|19|2)' >/dev/null; then
+  FOUNDJDK=$(/usr/libexec/java_home -v newest)
+  PATH="$FOUNDJDK/bin:$PATH"
+  echo JDK found via /usr/libexec/java_home: $FOUNDJDK
 else
   echo "Canceled. No JDK 17 or newer found."
   exit 1
