@@ -5,7 +5,7 @@ This example creates the macOS application bundle AppExample.app from the source
 In Terminal.app on macOS run `chmod a+rx makeitso.sh` and then `./makeitso.sh` to build the application package. The AppExample.app bundle is created in the current directory and can be started from there with a double click or can be moved to the folder /Applications.
 
 ## How to build the JavaFX example
-You need at least Java FX 17 JDK installed to build it. Java JDK-FX 17 is available for example from https://foojay.io/download when enabling the checkmark *Include JavaFX* below *Options* in the navigation.
+You need at least Java 17 FX JDK installed to build it. Java FX-JDK 17 is available for example from https://javaalmanac.io/jdk/download/#version=17 and https://foojay.io/download . Make sure to download a package with ***fx*** and ***jdk*** in the name.
 
 In Terminal.app on macOS run `chmod a+rx fxmakeitso.sh` and then `./fxmakeitso.sh` to build the FX application package. The FXMarsDuke.app bundle is created in the current directory and can be started from there with a double click or can be moved to the folder /Applications.
 
