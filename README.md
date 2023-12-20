@@ -33,6 +33,8 @@ Processed color image: https://areo.info/mer/spirit/120
 
 Raw data: https://mars.nasa.gov/mer/gallery/all/spirit_p120.html
 
+Duke: https://web.archive.org/web/19991215163004/http://java.sun.com/features/1999/05/duke.html
+
 ## License
 This is an application example, no copyright is claimed.
 
